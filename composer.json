@@ -12,7 +12,8 @@
     "require": {
         "php": "^8.1",
         "illuminate/support": "*",
-        "laravel/pulse": "^1.0.0@beta"
+        "laravel/pulse": "^1.0.0@beta",
+        "adoy/fastcgi-client": "^1.0"
     },
     "require-dev": {
         "orchestra/testbench": "^8",
