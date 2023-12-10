@@ -47,6 +47,7 @@ class PhpFpm extends Card
                         'datasets' => $this->datasets->map(function ($color, $set) use ($slug, $graphs) {
                             return $graphs->get($slug)?->get($set) ?? collect();
                         }),
+                        'active_since' => CarbonImmutable::createFromTimestamp($values->{'start time'}),
                         'updated_at' => $updatedAt = CarbonImmutable::createFromTimestamp($fpm->timestamp),
                         'recently_reported' => $updatedAt->isAfter(now()->subSeconds(30)),
                     ];

@@ -4,9 +4,6 @@
         title="Time: {{ number_format($time) }}ms; Run at: {{ $runAt }};"
         details="past {{ $this->periodForHumans() }}"
     >
-        <x-slot:icon>
-            <x-pulse::icons.queue-list/>
-        </x-slot:icon>
         <x-slot:actions>
             <div class="flex flex-wrap gap-4">
                 @foreach($datasets as $dataset => $color)
@@ -18,20 +15,16 @@
             </div>
         </x-slot:actions>
     </x-pulse::card-header>
-
     @if ($servers->isEmpty())
         <x-pulse::no-results/>
     @else
         <div wire:poll.5s class="overflow-x-auto pb-px">
-
             @foreach ($servers as $slug => $server)
                 <div class="grid gap-4 mx-px mb-px mt-4">
                     <div wire:key="{{ $slug }}">
                         @php
                             $highest = $server->datasets->flatten()->max();
                         @endphp
-
-
                         <div class="grid grid-cols-4 gap-3 text-center items-center">
                             <div class="flex">
                                 <div wire:key="{{ $slug }}-indicator"
@@ -49,14 +42,14 @@
                                      class="flex items-center pr-8 xl:pr-12 {{ $servers->count() > 1 ? 'py-2' : '' }} {{ !$server->recently_reported ? 'opacity-25 animate-pulse' : '' }}">
                                     <x-pulse::icons.server class="w-6 h-6 mr-2 stroke-gray-500 dark:stroke-gray-400"/>
                                     <span class="text-base font-bold text-gray-600 dark:text-gray-300"
-                                          title="Time: {{ number_format($time) }}ms; Run at: {{ $runAt }};">{{ $slug }}</span>
+                                          title="Time: {{ number_format($time) }}ms; Run at: {{ $runAt }};">{{ $server->name }}</span>
                                 </div>
                             </div>
                             <div class="flex flex-col justify-center @sm:block">
                                 <span class="text-xl uppercase font-bold text-gray-700 dark:text-gray-300 tabular-nums">
                                     {{ $server->{'accepted conn'} }}
                                 </span>
-                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400">
+                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400" title="Since: {{ $server->active_since }};">
                                     Accepted connections
                                 </span>
                             </div>
@@ -64,7 +57,7 @@
                                 <span class="text-xl uppercase font-bold text-gray-700 dark:text-gray-300 tabular-nums">
                                     {{ $server->{'max listen queue'} }}
                                 </span>
-                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400">
+                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400" title="Since: {{ $server->active_since }};">
                                     Max listen queue
                                 </span>
                             </div>
@@ -72,7 +65,7 @@
                                 <span class="text-xl uppercase font-bold text-gray-700 dark:text-gray-300 tabular-nums">
                                     {{ $server->{'max children reached'} ? 'Yes' : 'No' }}
                                 </span>
-                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400">
+                                <span class="text-xs uppercase font-bold text-gray-500 dark:text-gray-400" title="Since: {{ $server->active_since }};">
                                 Max children reached
                             </span>
                             </div>
@@ -96,10 +89,10 @@
                                                     datasets: [
                                                         @foreach($datasets as $dataset => $color)
                                                             {
-                                                                label: @js(ucfirst($dataset)),
-                                                                borderColor: @js($color),
+                                                                label: '{{ ucfirst($dataset) }}',
+                                                                borderColor: '{{ $color }}',
                                                                 data: @js($server->datasets->get($dataset)->values()),
-                                                                order: @js($loop->index),
+                                                                order: {{ $loop->index }},
                                                             },
                                                         @endforeach
                                                     ],
