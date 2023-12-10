@@ -50,7 +50,7 @@ return [
 ]
 ```
 
-Ensure you're running [the `pulse:check` command](https://laravel.com/docs/10.x/pulse#dashboard-cards).
+Ensure you're running [the `pulse:check` command](https://laravel.com/docs/10.x/pulse#capturing-entries).
 
 ## Add to your dashboard
 
