@@ -31,7 +31,7 @@ return [
     // ...
     
     'recorders' => [
-        PhpFpmRecorder::class => [
+        \Maantje\Pulse\PhpFpm\Recorders\PhpFpmRecorder::class => [
             // Optionally set a server name gethostname() is the default
             'server_name' => env('PULSE_SERVER_NAME', gethostname()),
             // Optionally set a status path the current value is the default
